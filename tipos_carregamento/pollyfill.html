@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Exemplo Polyfill</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <h1>Teste de Polyfill (JavaScript)</h1>
+    <div id="resultado" class="bloco">Verificando função...</div>
+
+    <script>
+        // --- O POLYFILL (A PRÓTESE) ---
+        if (!String.prototype.includes) {
+            console.log("Prótese instalada: O navegador não tinha o braço '.includes'");
+            String.prototype.includes = function(search) {
+                return this.indexOf(search) !== -1;
+            };
+        }
+
+        // --- O CÓDIGO DO USUÁRIO ---
+        const frase = "O SENAC é ótimo!";
+        const elemento = document.getElementById('r\esultado');
+
+        if (frase.includes("SENAC")) {
+            elemento.innerHTML = "✅ A função '.includes' funcionou (com ou sem prótese)!";
+            elemento.style.background = "#2ecc71";
+        }
+    </script>
+</body>
+</html>

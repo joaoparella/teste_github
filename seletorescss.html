@@ -1,0 +1,10 @@
+/* ❌ JEITO LENTO E PESADO (O Navegador sofre) */
+body div.container section.content article.post .author-box span.name {
+    margin-left: 20px; /* Força re-layout */
+}
+
+/* ✅ JEITO RÁPIDO E LEVE (O Navegador agradece) */
+.user-name {
+    transform: translateX(20px); /* Usa a GPU */
+    content-visibility: auto;    /* Só processa se estiver visível */
+}

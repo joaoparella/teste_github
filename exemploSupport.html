@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <style>
+        .card {
+            padding: 20px;
+            margin: 10px;
+            color: white;
+            /* FALLBACK: Estilo simples para navegadores velhos */
+            background-color: navy;
+            border: 5px solid black;
+        }
+
+        /* UPGRADE: Se o navegador suportar cores modernas e bordas arredondadas */
+        @supports (background: linear-gradient(to right, red, yellow)) {
+            .card {
+                background: linear-gradient(45deg, #3498db, #8e44ad);
+                border-radius: 20px;
+                border: none;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Sou um Card Inteligente</h2>
+        <p>Se o seu navegador for moderno, eu brilho. Se for antigo, eu apenas funciono.</p>
+    </div>
+</body>
+</html>

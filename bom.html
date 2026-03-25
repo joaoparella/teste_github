@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Site Acessível - Tags Semânticas</title>
+    <style>
+        .btn-real {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .btn-real:hover { background-color: #27ae60; }
+        /* Estilo visual para quando o usuário usa o Tab */
+        .btn-real:focus {
+            outline: 3px solid #3498db;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Loja de Eletrônicos (Acessível)</h1>
+    <p>Pressione <b>TAB</b> e veja o contorno de seleção aparecer:</p>
+    
+    <button class="btn-real" onclick="alert('Comprado com acessibilidade!')">
+        Comprar Agora
+    </button>
+
+    <p><i>Resultado: O foco funciona e leitores de tela anunciam: "Botão, Comprar Agora".</i></p>
+</body>
+</html>

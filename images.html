@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula: Performance de Imagens (CSS vs HTML)</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; background: #f0f2f5; }
+        h1 { text-align: center; color: #1a1a1a; }
+        .card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        .bad { border-top: 8px solid #ff4d4d; }
+        .good { border-top: 8px solid #2ecc71; }
+        
+        h2 { margin-top: 0; }
+        code { background: #eee; padding: 3px 6px; border-radius: 4px; font-family: monospace; color: #d63031; }
+
+        /* Estilo para o exemplo RUIM (display: none) */
+        .img-desktop { display: block; }
+        .img-mobile { display: none; }
+
+        @media (max-width: 600px) {
+            .img-desktop { display: none; }
+            .img-mobile { display: block; }
+        }
+
+        img { max-width: 100%; height: auto; border-radius: 8px; margin: 10px 0; }
+        .alert { padding: 10px; border-radius: 5px; font-weight: bold; font-size: 0.9em; }
+        .alert-error { background: #ffebeb; color: #d63031; }
+        .alert-success { background: #eafff2; color: #27ae60; }
+    </style>
+</head>
+<body>
+
+    <h1>Performance de Imagens na Prática</h1>
+
+    <div class="card bad">
+        <h2>❌ Jeito Incorreto: <code>display: none</code></h2>
+        <p>Aqui o navegador lê as duas tags <code>&lt;img&gt;</code> e baixa ambas, mesmo escondendo uma delas no celular.</p>
+        
+        <img src="https://placehold.jp/40/ff4d4d/ffffff/800x400.png?text=IMAGEM+DESKTOP+(BAIXADA)" class="img-desktop" alt="Desktop">
+        
+        <img src="https://placehold.jp/30/ff4d4d/ffffff/400x200.png?text=IMAGEM+MOBILE+(BAIXADA+TOA)" class="img-mobile" alt="Mobile">
+
+        <div class="alert alert-error">
+            Abra o Network (F12) > Verá 2 imagens baixadas aqui.
+        </div>
+    </div>
+
+    <div class="card good">
+        <h2>✅ Jeito Correto: Tag <code>&lt;picture&gt;</code></h2>
+        <p>O navegador analisa a regra ANTES de baixar. Ele escolhe apenas a que precisa.</p>
+        
+        <picture>
+            <source media="(max-width: 600px)" srcset="https://placehold.jp/30/2ecc71/ffffff/400x200.png?text=SÓ+A+LEVE+FOI+BAIXADA">
+            
+            <img src="https://placehold.jp/40/2ecc71/ffffff/800x400.png?text=SÓ+A+PESADA+FOI+BAIXADA" alt="Exemplo Picture">
+        </picture>
+
+        <div class="alert alert-success">
+            Abra o Network (F12) > Verá apenas 1 imagem baixada aqui.
+        </div>
+    </div>
+
+    <div style="background: #333; color: white; padding: 20px; border-radius: 12px;">
+        <h3>Instruções para os alunos:</h3>
+        <ol>
+            <li>Pressione <b>F12</b> e clique na aba <b>Network</b> (ou Rede).</li>
+            <li>Certifique-se de que o filtro <b>Img</b> está selecionado.</li>
+            <li>Dê <b>F5</b> na página.</li>
+            <li>Observe que no quadro vermelho aparecem 2 requisições, mas no verde apenas 1.</li>
+            <li>Mude para o modo "Mobile" do navegador, dê F5 de novo e veja o resultado mudar!</li>
+        </ol>
+    </div>
+
+</body>
+</html>

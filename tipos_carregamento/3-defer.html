@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Modo Defer - O Educado</title>
+    <link rel="stylesheet" href="estilo.css">
+    <script defer src="data:text/javascript,
+    console.log('Script defer: Carregou o script, mas só executa depois do HTML ser processado.');
+    setTimeout(() => {
+
+        const div = document.createElement('div');
+        div.className = 'script-log';
+        div.innerHTML = '⚡ Eletricista: CHEGUEI! Instalei a luz na hora que deu!';
+        document.body.appendChild(div);
+    }, 1);
+"></script>
+</head>
+<body>
+    <h1>Obra: Modo Defer</h1>
+    <div class="bloco">🧱 Tijolo 1: Alicerce pronto.</div>
+    <div class="bloco">🧱 Tijolo 2: Paredes erguidas.</div>
+    <div class="bloco">🏠 Tijolo 3: Telhado finalizado.</div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula: Performance com Content-Visibility</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f4f9;
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: white;
+            font-size: 12px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .status-off { background: var(--danger); }
+        .status-on { background: var(--success); }
+
+        h1 { color: #2c3e50; }
+
+        /* O PULO DO GATO ESTÁ NESSA CLASSE */
+        .post {
+            background: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            /* Simula um post pesado com sombra e bordas */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Classe de Otimização */
+        .optimized {
+            content-visibility: auto;
+            contain-intrinsic-size: 200px; /* Reserva o espaço aproximado */
+        }
+
+        .post h2 { margin-top: 0; color: var(--primary); }
+        .post p { color: #666; line-height: 1.5; }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .post-image {
+            margin-top: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        /* Seletor específico para a img sem usar class */
+        main article picture img {
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: block;
+        }
+
+        main article picture img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.5);
+        }
+
+        button:hover { filter: brightness(1.1); }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <div id="status" class="status-badge status-off">Otimização: DESLIGADA</div>
+        <button onclick="toggleOptimization()">Alternar Otimização</button>
+        <p style="font-size: 11px; margin-top: 10px;">
+            <b>Como testar:</b><br>
+            1. Ligue a otimização.<br>
+            2. Role a página rápido.<br>
+            3. Note que a barra de rolagem se ajusta conforme o navegador "descobre" os posts.
+        </p>
+    </div>
+
+    <header>
+        <h1>Feed de Notícias Infinito</h1>
+        <p>Este arquivo contém 500 posts gerados por script para testar a carga da CPU.</p>
+    </header>
+
+    <main id="feed">
+        </main>
+
+    <script>
+        const feed = document.getElementById('feed');
+        const status = document.getElementById('status');
+        let isOptimized = false;
+
+        // Gerar 500 posts para criar uma página bem longa
+        function generatePosts() {
+            let html = '';
+            for (let i = 1; i <= 500; i++) {
+                html += `
+                    <article class="post">
+                        <h2>Postagem #${i}</h2>
+                        <p>Este é um exemplo de conteúdo que o navegador precisa renderizar. Imagine que aqui tivéssemos imagens pesadas, widgets de redes sociais e outros elementos complexos. Sem a propriedade de contenção, o navegador gastaria memória com todos esses 500 itens de uma vez só.</p>
+                        <div style="height: 50px; background: #eee; border-radius: 4px;"></div>
+                        <picture>
+                            <source srcset="https://placehold.co/600x400/png?text=Imagem+WebP" type="image/webp">
+                            <img class="post-image" 
+                            src="https://placehold.co/600x400.png" 
+                                alt="Exemplo de Performance" 
+                                width="600" height="400" 
+                                
+                                style="max-width: 100%; height: auto;">
+                        </picture>
+                    </article>
+                `;
+            }
+            feed.innerHTML = html;
+        }
+
+        function toggleOptimization() {
+            const posts = document.querySelectorAll('.post');
+            isOptimized = !isOptimized;
+
+            posts.forEach(post => {
+                if (isOptimized) {
+                    post.classList.add('optimized');
+                } else {
+                    post.classList.remove('optimized');
+                }
+            });
+
+            if (isOptimized) {
+                status.innerText = "Otimização: LIGADA";
+                status.className = "status-badge status-on";
+            } else {
+                status.innerText = "Otimização: DESLIGADA";
+                status.className = "status-badge status-off";
+            }
+        }
+
+        // Inicializa
+        generatePosts();
+    </script>
+</body>
+</html>

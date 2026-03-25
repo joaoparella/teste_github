@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula de Desempenho e Compatibilidade</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- [OTIMIZAÇÃO 3] Preload: Carrega recursos críticos com alta prioridade -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" as="script">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
+    <style>
+        /* [OTIMIZAÇÃO 2] CSS Crítico Inline para renderização instantânea */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        .hero {
+            background: #2c3e50;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            min-height: 300px; /* Evita Layout Shift (CLS) */
+        }
+        .container { max-width: 800px; margin: auto; padding: 20px; }
+        
+        /* [COMPATIBILIDADE] Uso de Feature Detection no CSS */
+        .grid-layout {
+            display: block; /* Fallback para browsers antigos */
+            margin-top: 20px;
+        }
+        @supports (display: grid) {
+            .grid-layout {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            transition: transform 0.3s ease; /* [PERFORMANCE] Transform usa GPU */
+        }
+        .card:hover {
+            transform: scale(1.05); /* Melhor que mudar width/height */
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <h1>Minha Página Otimizada</h1>
+        <p>Aprenda Core Web Vitals e Performance Front-end</p>
+    </header>
+
+    <main class="container">
+        <section>
+            <h2>Imagens e Performance</h2>
+            <picture>
+                <source srcset="https://placehold.co/600x400/png?text=Imagem+WebP" type="image/webp">
+                <img src="https://placehold.co/600x400.png" 
+                     alt="Exemplo de Performance" 
+                     width="600" height="400" 
+                     loading="lazy" 
+                     style="max-width: 100%; height: auto;">
+            </picture>
+        </section>
+
+        <section class="grid-layout">
+            <div class="card">
+                <h3>Recurso A</h3>
+                <p>Exemplo de card usando CSS Grid com fallback.</p>
+                <button id="btnShare">Compartilhar Artigo</button>
+            </div>
+            <div class="card">
+                <h3>Recurso B</h3>
+                <p>Animação fluida via GPU (Transform).</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Seleção de elementos
+        const btnShare = document.querySelector('#btnShare');
+        const statusMessage = document.querySelector('#statusMessage');
+
+        // Dados para compartilhamento
+        const shareData = {
+            title: 'Aula de Performance e Compatibilidade',
+            text: 'Estou aprendendo sobre desenvolvimento front-end moderno nesta aula prática!',
+            url: window.location.href
+        };
+
+        // Lógica de Compartilhamento Resiliente
+        btnShare.addEventListener('click', async () => {
+            
+            // 1. Verificação de suporte (Feature Detection)
+            if (navigator.share) {
+                try {
+                    // Abre a interface nativa do Android/iOS/Windows
+                    await navigator.share(shareData);
+                    statusMessage.textContent = "Compartilhado com sucesso!";
+                } catch (err) {
+                    // Erro ou cancelamento pelo usuário
+                    statusMessage.textContent = "Compartilhamento cancelado.";
+                    console.log('Erro:', err);
+                }
+            } 
+            // 2. Fallback para navegadores sem suporte (Ex: Chrome Desktop antigo)
+            else {
+                try {
+                    await navigator.clipboard.writeText(shareData.url);
+                    statusMessage.textContent = "API nativa não suportada. Link copiado para a área de transferência!";
+                    alert('Seu navegador não possui compartilhamento nativo. Copiamos o link para você!');
+                } catch (copyErr) {
+                    statusMessage.textContent = "Erro ao copiar link.";
+                }
+            }
+        });
+
+        // [DICA EXTRA] Monitorando o tempo de carregamento (LCP aproximado)
+        window.addEventListener('load', () => {
+            const time = window.performance.now();
+            console.log(`Página totalmente carregada em: ${Math.round(time)}ms`);
+        });
+    </script>
+</body>
+</html>

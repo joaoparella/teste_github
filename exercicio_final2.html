@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <style>
+        .hero {
+            background: #2c3e50;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            min-height: 300px; /* Evita Layout Shift (CLS) */
+        }
+        .grid-layout {
+            display: block; /* Fallback para browsers antigos */
+            margin-top: 20px;
+        }
+
+        @supports (display: grid) {
+            .grid-layout {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            transition: transform 0.3s ease; /* [PERFORMANCE] Transform usa GPU */
+        }
+        .card:hover {
+            transform: scale(1.05); /* Melhor que mudar width/height */
+        }
+
+    </style>
+    <meta charset="UTF-8">
+    <title>Site Exemplo</title>
+</head>
+<body>
+    <header class="hero">
+        <h1>Minha Página Otimizada</h1>
+        <p>Aprenda Core Web Vitals e Performance Front-end</p>
+    </header>
+
+     <section class="grid-layout">
+        <div class="card">
+            <h3>Recurso A</h3>
+            <p>Exemplo de card usando CSS Grid com fallback.</p>
+            <button id="btnShare">Compartilhar Artigo</button>
+        </div>     
+        <div class="card">
+            <h3>Recurso A</h3>
+            <p>Exemplo de card usando CSS Grid com fallback.</p>
+            <button id="btnShare2">Compartilhar Artigo</button>
+        </div> 
+        <div class="card">
+            <h3>Recurso A</h3>
+            <p>Exemplo de card usando CSS Grid com fallback.</p>
+            <button id="btnShare3">Compartilhar Artigo</button>
+        </div>   
+         <div class="card">
+            <h3>Recurso A</h3>
+            <p>Exemplo de card usando CSS Grid com fallback.</p>
+            <button id="btnShare4">Compartilhar Artigo</button>
+        </div>    
+    </section>
+
+    <script>
+        // Função para compartilhar usando Web Share API
+        async function compartilharArtigo(titulo, descricao) {
+            // Verifica se o navegador suporta Web Share API
+            if (!navigator.share) {
+                alert('❌ Desculpe! Seu navegador não suporta compartilhamento. Por favor, copie o link manualmente.');
+                return;
+            }
+
+            try {
+                await navigator.share({
+                    title: titulo,
+                    text: descricao,
+                    url: window.location.href
+                });
+                console.log('✅ Artigo compartilhado com sucesso!');
+            } catch (erro) {
+                // Ignora se o usuário cancelar o compartilhamento
+                if (erro.name !== 'AbortError') {
+                    console.error('Erro ao compartilhar:', erro);
+                    alert('❌ Erro ao compartilhar. Tente novamente mais tarde.');
+                }
+            }
+        }
+
+        // Atribui listeners aos botões
+        document.getElementById('btnShare').addEventListener('click', () => {
+            compartilharArtigo(
+                'Recurso A',
+                'Exemplo de card usando CSS Grid com fallback.'
+            );
+        });
+
+        document.getElementById('btnShare2').addEventListener('click', () => {
+            compartilharArtigo(
+                'Recurso A',
+                'Exemplo de card usando CSS Grid com fallback.'
+            );
+        });
+
+        document.getElementById('btnShare3').addEventListener('click', () => {
+            compartilharArtigo(
+                'Recurso A',
+                'Exemplo de card usando CSS Grid com fallback.'
+            );
+        });
+
+        document.getElementById('btnShare4').addEventListener('click', () => {
+            compartilharArtigo(
+                'Recurso A',
+                'Exemplo de card usando CSS Grid com fallback.'
+            );
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Exemplo @supports</title>
+    <style>
+        /* Estilo "Seguro" (Para quem tem alergia a novidade) */
+        .caixa {
+            background-color: #ccc;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Pergunta: "Ei, você suporta Grid Layout?" */
+        @supports (display: grid) {
+            .caixa {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                background-color: #3498db;
+                color: white;
+            }
+            .caixa::after { content: " (Suporta Grid!)"; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Teste de Suporte (CSS)</h1>
+    <div class="caixa">
+        <div>Item 1</div>
+        <div>Item 2</div>
+    </div>
+</body>
+</html>

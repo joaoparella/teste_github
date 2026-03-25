@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador Babel</title>
+    <link rel="stylesheet" href="estilo.css">
+    <style>
+        pre { background: #2d3436; color: #fab1a0; padding: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Babel & Browserslist</h1>
+    <p><strong>Configuração (Browserslist):</strong> "Apenas navegadores idosos"</p>
+    
+    <h3>Código Moderno (O que você escreve):</h3>
+    <pre>const dobro = (n) => n * 2;</pre>
+
+    <h3>Código Traduzido pelo Babel (O que o idoso entende):</h3>
+    <pre>
+var dobro = function dobro(n) {
+  return n * 2;
+};</pre>
+
+    <div class="bloco">
+        <strong>Explicação:</strong> O Babel leu a "lista de convidados" (Browserslist), viu que tinha idosos na festa e trocou a <b>Arrow Function (=>)</b> por uma <b>Function</b> comum.
+    </div>
+</body>
+</html>

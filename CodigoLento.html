@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo: Layout vs Composite (Performance)</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        .container { display: flex; gap: 50px; justify-content: center; }
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* MÉTODO LENTO: Força RE-LAYOUT */
+        .slow-animation {
+            animation: move-margin 2s infinite alternate ease-in-out;
+        }
+        @keyframes move-margin {
+            from { margin-left: 0; }
+            to { margin-left: 200px; }
+        }
+
+        /* MÉTODO RÁPIDO: Usa COMPOSITE (GPU) */
+        .fast-animation {
+            animation: move-transform 2s infinite alternate ease-in-out;
+        }
+        @keyframes move-transform {
+            from { transform: translateX(0); }
+            to { transform: translateX(200px); }
+        }
+
+        .label { font-size: 0.9em; color: #555; margin-bottom: 10px; }
+        .warning { color: #e74c3c; font-weight: bold; }
+        .success { color: #27ae60; font-weight: bold; }
+        
+        /* Estilos do botão */
+        .pause-btn {
+            margin-top: 30px;
+            padding: 12px 60px;
+            width: 300px;
+            font-size: 1em;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        
+        .pause-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .pause-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .pause-btn.paused-state {
+            background-color: #e74c3c;
+        }
+        
+        .pause-btn.paused-state:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Classe para pausar animação */
+        .paused {
+            animation-play-state: paused !important;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Performance de Renderização</h1>
+    <p>Abra o <b>DevTools (F12)</b> > <b>Três Pontinhos</b> > <b>More Tools</b> > <b>Rendering</b> e ative <b>"Paint Flashing"</b>.</p>
+
+    <div class="container">
+        <div>
+            <p class="label">Animando <code class="warning">margin-left</code><br>(Gera Layout/Reflow)</p>
+            <div class="box fast-animation">CPU</div>
+            <p><small>O navegador recalcula a posição de tudo.</small></p>
+        </div>
+
+        <div>
+            <p class="label">Animando <code class="success">transform</code><br>(Gera apenas Composite)</p>
+            <div class="box slow-animation">GPU</div>
+            <p><small>O navegador apenas move a "camada".</small></p>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <button class="pause-btn" id="pauseBtn">Pausar Animação</button>
+    </div>
+
+    <script>
+        const pauseBtn = document.getElementById('pauseBtn');
+        const boxes = document.querySelectorAll('.box');
+        let isPaused = false;
+
+        pauseBtn.addEventListener('click', function() {
+            isPaused = !isPaused;
+            
+            boxes.forEach(box => {
+                box.classList.toggle('paused');
+            });
+            
+            // Muda a cor do botão e o texto
+            if (isPaused) {
+                pauseBtn.classList.add('paused-state');
+                pauseBtn.textContent = 'Retomar Animação';
+            } else {
+                pauseBtn.classList.remove('paused-state');
+                pauseBtn.textContent = 'Pausar Animação';
+            }
+        });
+    </script>
+
+</body>
+</html>
+</html>

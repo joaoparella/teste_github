@@ -1,0 +1,19 @@
+<script>
+        const btnShare = document.querySelector('#btnShare');
+
+        const shareData = {
+            title: 'Aula de Performance e Compatibilidade',
+            text: 'Estou aprendendo sobre desenvolvimento front-end moderno nesta aula prática!',
+            url: window.location.href
+        };
+
+        btnShare.addEventListener('click', async () => {
+            alert('Voce clicou no botao');
+            if (navigator.share) {
+                await navigator.share(shareData);
+                statusMessage.textContent = "Compartilhado com sucesso!";
+            }else{
+                alert('Compartilhamento não suportado neste navegador. Copie o link: ' + shareData.url);
+            }
+        });
+    </script>

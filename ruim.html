@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Site Inacessível - Somente Divs</title>
+    <style>
+        .btn-falso {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        .btn-falso:hover { background-color: #c0392b; }
+    </style>
+</head>
+<body>
+    <h1>Loja de Eletrônicos (Inacessível)</h1>
+    <p>Tente usar a tecla <b>TAB</b> para chegar no botão abaixo:</p>
+    
+    <div class="btn-falso" onclick="alert('Comprado!')">
+        Comprar Agora
+    </div>
+
+    <p><i>Resultado: O foco do teclado nunca para aqui.</i></p>
+</body>
+</html>
